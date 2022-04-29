@@ -1,0 +1,18 @@
+<section class="row aln-center" style="height: 100%">
+  <div style="overflow: hidden; padding: 0">
+    <ng-progress [color]="'#e44c65'" [fixed]="false" [meteor]="false" [thick]="true" id="cardBar"></ng-progress>
+    <div class="card-container">
+      <span class="image left"><img alt="" src="assets/images/pic06.jpg"/></span>
+      <h3>
+        <mat-icon matListIcon>{{(selected.played) ? 'gamepad' : 'cloud_download'}}</mat-icon>
+        {{selected.title | uppercase}}
+        <button (click)="openDialog()" style="float: right">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </h3>
+      <p>{{selected.desc || 'lorem'}}</p>
+      <a (click)="update()"
+         [ngClass]="{'button': true, 'primary': !selected.played}">{{(selected.played) ? 'Désinstaller' : 'Jouer'}}</a>
+    </div>
+  </div>
+</section>

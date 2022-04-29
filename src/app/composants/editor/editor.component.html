@@ -1,0 +1,26 @@
+<ng-progress [color]="'#e44c65'" [fixed]="false" [meteor]="false" [thick]="true" id="editorBar"></ng-progress>
+<h2 mat-dialog-title>Game Editor</h2>
+<form (submit)="submit()" [formGroup]="form" class="row">
+  <input [formControl]="id" type="hidden">
+  <mat-form-field [floatLabel]="'auto'" appearance="fill" class="col-12">
+    <mat-label>Titre</mat-label>
+    <input [formControl]="title" matInput placeholder="Ex. Elsword" required>
+    <mat-error *ngIf="title.hasError('required')">Titre requis</mat-error>
+  </mat-form-field>
+
+  <mat-form-field [floatLabel]="'auto'" appearance="fill" class="col-12">
+    <mat-label>Description</mat-label>
+    <input [formControl]="desc" matInput placeholder="Googled">
+  </mat-form-field>
+  <span class="col-12">
+    <mat-checkbox [formControl]="played"><p>Joué</p></mat-checkbox>
+  </span>
+  <span class="col-12">
+  <ul class="actions col-10">
+    <li><input [disabled]="!form.valid" [disabled]="jeu && (abuseGard.getPending() | async).includes(jeu.id)" class="button primary" type="submit"
+               value="Enregistrer"></li>
+    <li *ngIf="jeu"><button (click)="remove()" [disabled]="jeu && (abuseGard.getPending() | async).includes(jeu.id)"
+                            class="button primary">Supprimer</button></li>
+  </ul>
+  </span>
+</form>

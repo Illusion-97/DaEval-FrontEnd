@@ -1,0 +1,9 @@
+#page-wrapper {
+  height: 90vh;
+}
+
+@media screen and (max-width: 980px) {
+  #page-wrapper {
+    height: auto;
+  }
+}

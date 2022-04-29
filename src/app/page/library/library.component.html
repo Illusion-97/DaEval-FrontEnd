@@ -1,0 +1,18 @@
+<!-- Main -->
+<div class="style1" id="main">
+  <div class="container">
+    <div class="row gtr-150" style="height: 100%">
+      <div class="col-4 col-12-medium" style="height: 100%;padding-left: 0">
+        <!-- Sidebar -->
+        <section *ngIf="jeux" id="sidebar">
+          <app-title-list (filterChange)="setFilter($event)" [(selected)]="selected" [jeux]="jeux"></app-title-list>
+        </section>
+      </div>
+      <div class="col-8 col-12-medium imp-medium card">
+        <app-card (selectedChange)="get(selected)" *ngIf="selected" [selected]="selected"></app-card>
+      </div>
+    </div>
+  </div>
+</div>
+
+

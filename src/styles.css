@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-dialog-container {
+  background: rgba(39, 40, 51, 0.965);
+  color: #fff;
+}
+
+.mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #e44c65;
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: #e44c65;
+}
+
+.mat-form-field-label, .mat-hint {
+  color: #fff9;
+}
+
+.mat-checkbox-frame {
+  border-color: #fff9;
+}
+
+.c {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -100;
+}

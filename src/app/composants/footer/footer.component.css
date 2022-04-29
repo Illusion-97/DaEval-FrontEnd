@@ -1,0 +1,10 @@
+#footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  padding: 0;
+  height: 10vh;
+  width: 100vw;
+  background-color: rgba(39, 40, 51, 0.965);
+}

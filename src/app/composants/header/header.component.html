@@ -1,0 +1,21 @@
+<!-- Header -->
+<header id="header">
+  <h1 id="logo"><a>{{title}}</a></h1>
+  <nav id="nav">
+    <ul>
+      <li><a (click)="openDialog()" class="button primary">Nouveau Jeu</a></li>
+      <li><a [matMenuTriggerFor]="menu" aria-label="settings" class="button primary">
+        <mat-icon style="vertical-align: middle">settings</mat-icon>
+      </a>
+        <mat-menu #menu="matMenu">
+          <mat-slide-toggle
+            (change)="handleCanevas()"
+            [(checked)]="anim"
+            [color]="'#e44c65'">
+            Animations
+          </mat-slide-toggle>
+        </mat-menu>
+      </li>
+    </ul>
+  </nav>
+</header>
