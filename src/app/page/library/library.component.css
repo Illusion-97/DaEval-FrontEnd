@@ -1,16 +1,7 @@
-
-#main {
-  height: 100%;
+.br-inset {
+  border-radius: 2em;
+  border-right: inset 1px rgb(255 255 255 / 30%);
 }
-
-.container {
-  height: 100%;
-}
-
-#sidebar {
-  height: 100%;
-}
-
 
 @media screen and (max-width: 980px) {
   #sidebar {

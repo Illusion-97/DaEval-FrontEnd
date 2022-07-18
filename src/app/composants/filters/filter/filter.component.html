@@ -1,0 +1,36 @@
+<div class="list scrollbar scrollbar-primary">
+  <mat-list>
+    <ng-container *ngFor="let item of filtered ">
+      <mat-list-item (click)="select(item)"
+                     [ngClass]="{'button': true, 'primary': (selected !== undefined && getName(item) === getName(selected))}">
+        <mat-icon matListIcon>{{icon}}</mat-icon>
+        <h3 matLine>{{getName(item)}}</h3>
+      </mat-list-item>
+    </ng-container>
+  </mat-list>
+</div>
+<mat-divider></mat-divider>
+<div class="row bot aln-center">
+  <button *ngIf="!(method === 'All')" [routerLink]="[ROUTE_BY_TYPE.get(type)]" aria-label="All" class="button primary col-8">
+    <mat-icon>{{icon}}</mat-icon>
+    Tous
+  </button>
+  <button *ngIf="method === 'All'" [matMenuTriggerFor]="menu" aria-label="settings" class="button primary col-8">
+    <mat-icon>settings</mat-icon>
+    Filtres
+  </button>
+  <mat-menu #menu="matMenu" yPosition="above">
+    <div (click)="$event.stopPropagation();" class="filters">
+      <ng-container [ngSwitch]="type">
+        <ng-container *ngSwitchCase="DTO_TYPES.TITRE_PRO">
+          <app-filter-titre [type]="type" [method]="method" [(filtered)]="filtered"></app-filter-titre>
+        </ng-container>
+        <ng-container *ngSwitchCase="DTO_TYPES.VILLE">
+          <app-filter-ville [type]="type" [method]="method" [(filtered)]="filtered"></app-filter-ville>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+        </ng-container>
+      </ng-container>
+    </div>
+  </mat-menu>
+</div>

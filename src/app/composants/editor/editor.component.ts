@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit, Optional} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Jeu} from '../../../models/jeu';
+import {Select} from '../../../models/Select';
 import {LibraryService} from '../../../services/library.service';
 import {NgProgress, NgProgressRef} from 'ngx-progressbar';
 import {AntiAbuseService} from '../../../services/anti-abuse.service';
@@ -13,7 +13,7 @@ import {AntiAbuseService} from '../../../services/anti-abuse.service';
 })
 export class EditorComponent implements OnInit {
 
-  jeu: Jeu = undefined;
+  jeu: Select = undefined;
 
   form = new FormGroup({});
   id = new FormControl(-1, Validators.required);
@@ -23,7 +23,7 @@ export class EditorComponent implements OnInit {
   progressRef: NgProgressRef;
 
   constructor(public dialogRef: MatDialogRef<EditorComponent>,
-              @Optional() @Inject(MAT_DIALOG_DATA) public data: Jeu,
+              @Optional() @Inject(MAT_DIALOG_DATA) public data: Select,
               private service: LibraryService, fb: FormBuilder, private progress: NgProgress, public abuseGard: AntiAbuseService) {
     this.form = fb.group(
       {
@@ -49,25 +49,25 @@ export class EditorComponent implements OnInit {
 
   submit() {
     if (this.jeu) {
-      this.abuseGard.engage(this.jeu.id);
+      this.abuseGard.engage(this.jeu.selected.id);
     }
     this.progressRef.start();
-    this.service.save(this.form.value).subscribe(jeu => {
+    /*this.service.save(this.form.value).subscribe(jeu => {
       this.service.update.emit(jeu);
       this.abuseGard.setFree(jeu.id);
       this.progressRef.complete();
       this.onNoClick();
-    });
+    });*/
   }
 
   remove() {
-    this.abuseGard.engage(this.jeu.id);
+    this.abuseGard.engage(this.jeu.selected.id);
     this.progressRef.start();
-    this.service.remove(this.jeu.id).subscribe(() => {
+    /*this.service.delete(this.jeu.id).subscribe(() => {
       this.service.update.emit(undefined);
       this.abuseGard.setFree(this.jeu.id);
       this.progressRef.complete();
       this.onNoClick();
-    });
+    });*/
   }
 }

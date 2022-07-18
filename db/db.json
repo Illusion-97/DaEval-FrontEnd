@@ -22,13 +22,13 @@
       "id": 4,
       "title": "Blade & Soul",
       "desc": "Partez en quête de vengeance et repoussez les forces du mal sous les traits d'un maître des arts martiaux dans Blade & Soul, le MMORPG free-to-play.",
-      "played": true
+      "played": false
     },
     {
       "id": 5,
       "title": "Dragon Nest",
       "desc": "Plongez dans l'action et dans des combats acharnés très colorés d'un monde où les anciens Dragons se réveillent et où tous attendent la venue de la ...",
-      "played": false
+      "played": true
     },
     {
       "id": 6,
@@ -40,7 +40,7 @@
       "id": 7,
       "title": "Leage Of Legends",
       "desc": "League of Legends est un jeu en équipe avec plus de 140 champions, pour des actions à couper le souffle. Jouez gratuitement dès maintenant.",
-      "played": true
+      "played": false
     },
     {
       "id": 8,
@@ -65,12 +65,6 @@
       "title": "Apex Legends",
       "desc": "Apex Legends est un jeu de tir de héros gratuit où des compétiteurs légendaires combattent ensemble aux confins de la Frontière pour la gloire et la ...",
       "played": true
-    },
-    {
-      "id": 12,
-      "title": "Try",
-      "desc": "Meh",
-      "played": false
     }
   ]
 }

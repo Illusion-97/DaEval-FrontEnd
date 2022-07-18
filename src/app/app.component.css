@@ -1,5 +1,6 @@
 #page-wrapper {
-  height: 90vh;
+  height: 100vh;
+  padding-bottom: 6em;
 }
 
 @media screen and (max-width: 980px) {

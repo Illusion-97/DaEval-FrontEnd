@@ -1,50 +1,72 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {Jeu} from '../models/jeu';
-import {Observable} from 'rxjs';
-import {HttpClient, HttpEvent, HttpHeaders} from '@angular/common/http';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {HttpClient, HttpEvent, HttpParams} from '@angular/common/http';
+import {API_SERVICE_BY_TYPE, API_URL, DTO_TYPES} from '../environments/environment';
+import {ParamMap} from '@angular/router';
+import {Select} from '../models/Select';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LibraryService {
-  update: EventEmitter<Jeu> = new EventEmitter<Jeu>();
+  select: BehaviorSubject<Select> = new BehaviorSubject<Select>(undefined);
+  navigate: EventEmitter<Select> = new EventEmitter<Select>();
+  update: EventEmitter<Select> = new EventEmitter<Select>();
 
   constructor(private http: HttpClient) {
   }
 
-  all(): Observable<HttpEvent<Jeu[]>> {
-    return this.http.get<Jeu[]>('http://localhost:3000/jeux', {
-      observe: 'events',
-      reportProgress: true
-    });
+  all(type: DTO_TYPES): Observable<HttpEvent<any>> {
+    return this.handle('get', type, 'All');
   }
 
-  save(jeu: Jeu): Observable<Jeu> {
-    if (jeu.id === -1) {
-      jeu.id = 0;
-      return this.create(jeu);
-    } else {
-      return this.put(jeu);
+  handle(request: string, type: DTO_TYPES, methode: string, body?: any, params?: ParamMap) {
+    const service = API_SERVICE_BY_TYPE.get(type);
+    switch (request) {
+      case 'get':
+        return this.get(this.getUrl(service, methode), this.getOptions(params));
+      case 'post':
+        return this.post(this.getUrl(service, methode), body, this.getOptions(params));
+      case 'put':
+        return this.put(this.getUrl(service, methode), body, this.getOptions(params));
+      case 'delete':
+        return this.delete(this.getUrl(service, methode), this.getOptions(params));
+      default:
+        return undefined;
     }
   }
 
-  get(id: number): Observable<Jeu> {
-    return this.http.get<Jeu>('http://localhost:3000/jeux/' + id);
+  getUrl(service: string, methode: string): string {
+    const url = API_URL + service + '/' + methode;
+    console.log(url);
+    return url;
   }
 
-  create(jeu: Jeu): Observable<Jeu> {
-    return this.http.post<Jeu>('http://localhost:3000/jeux', JSON.stringify(jeu), {
-      headers: new HttpHeaders({'Content-Type': 'application/json'})
-    });
+  getHttpParams(params?: ParamMap): HttpParams {
+    let httpParams = new HttpParams();
+    if (params) { params.keys.forEach(key => httpParams = httpParams.append(key, params.get(key))); }
+    return httpParams;
   }
 
-  put(jeu: Jeu): Observable<Jeu> {
-    return this.http.put<Jeu>('http://localhost:3000/jeux/' + jeu.id, JSON.stringify(jeu), {
-      headers: new HttpHeaders({'Content-Type': 'application/json'})
-    });
+  getOptions(params?: ParamMap) {
+    return {
+      observe: 'events',
+      reportProgress: true,
+      params: this.getHttpParams(params)
+    };
   }
 
-  remove(id: number) {
-    return this.http.delete<Jeu>('http://localhost:3000/jeux/' + id);
+  get(url: string, options): Observable<HttpEvent<any>>  {
+    return this.http.get<HttpEvent<any>>(url, options);
   }
+  post(url: string, body, options): Observable<HttpEvent<any>> {
+    return this.http.post<HttpEvent<any>>(url, body, options);
+  }
+  put(url: string, body, options): Observable<HttpEvent<any>> {
+    return this.http.put<HttpEvent<any>>(url, body, options);
+  }
+  delete(url: string, options): Observable<HttpEvent<any>> {
+    return this.http.delete<HttpEvent<any>>(url, options);
+  }
+
 }

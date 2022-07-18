@@ -1,0 +1,14 @@
+<!-- Main -->
+<div class="style1 h100" id="main">
+  <div class="container h100" >
+    <div class="row gtr-150 h100">
+      <div class="col-12 h100 br-inset">
+        <div class="row gtr-50 gtr-uniform aln-middle h100">
+          <div *ngFor="let type of countByType.keys()" class="col-3" [href]="ROUTE_BY_TYPE.get(type)">
+            {{TYPE_NAME.get(type)}} : {{countByType.get(type)}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

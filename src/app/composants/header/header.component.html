@@ -3,7 +3,11 @@
   <h1 id="logo"><a>{{title}}</a></h1>
   <nav id="nav">
     <ul>
-      <li><a (click)="openDialog()" class="button primary">Nouveau Jeu</a></li>
+      <!--<li><a (click)="openDialog()" class="button primary">Nouveau Jeu</a></li>-->
+      <li><a [href]="ROUTE_BY_TYPE.get(DTO_TYPES.TITRE_PRO)" class="button primary">Titres Professionnels</a></li>
+      <li><a [href]="ROUTE_BY_TYPE.get(DTO_TYPES.VILLE)" class="button primary">Villes</a></li>
+      <li><a [href]="ROUTE_BY_TYPE.get(DTO_TYPES.PROMOTION)" class="button primary">Promotions</a></li>
+      <li><a [href]="ROUTE_BY_TYPE.get(DTO_TYPES.ETUDIANT)" class="button primary">Etudiants</a></li>
       <li><a [matMenuTriggerFor]="menu" aria-label="settings" class="button primary">
         <mat-icon style="vertical-align: middle">settings</mat-icon>
       </a>

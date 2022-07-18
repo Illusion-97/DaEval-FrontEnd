@@ -22,6 +22,10 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {HttpClientModule} from '@angular/common/http';
 import {MatDividerModule} from '@angular/material/divider';
 import {NgProgressModule} from 'ngx-progressbar';
+import { FilterVilleComponent } from './composants/filters/filter-ville/filter-ville.component';
+import { FilterTitreComponent } from './composants/filters/filter-titre/filter-titre.component';
+import { HomeComponent } from './page/home/home.component';
+import {FilterComponent} from './composants/filters/filter/filter.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +35,11 @@ import {NgProgressModule} from 'ngx-progressbar';
     TitleListComponent,
     HeaderComponent,
     FooterComponent,
-    EditorComponent
+    EditorComponent,
+    FilterComponent,
+    FilterVilleComponent,
+    FilterTitreComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

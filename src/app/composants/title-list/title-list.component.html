@@ -1,36 +1,12 @@
-<div style="height: 100%">
-  <div class="list scrollbar scrollbar-primary">
-    <mat-list>
-      <ng-container *ngFor="let jeu of jeux ">
-        <ng-container *ngIf="jeu.title.toUpperCase().includes(value.toUpperCase()) &&
-        (filter === 'all' || jeu.played.toString() === filter)">
-          <mat-list-item (click)="select(jeu)"
-                         [ngClass]="{'button': true, 'primary': (selected !== undefined && selected.id === jeu.id)}">
-            <mat-icon matListIcon>{{(jeu.played) ? 'gamepad' : 'cloud_download'}}</mat-icon>
-            <h3 matLine> {{jeu.title}} </h3>
-          </mat-list-item>
-        </ng-container>
-      </ng-container>
-    </mat-list>
-  </div>
-  <div class="row bot aln-center">
-    <button [matMenuTriggerFor]="menu" aria-label="settings" class="button primary col-8">
-      <mat-icon>settings</mat-icon>
-      Filtres
+<div class="side">
+  <ng-container *ngIf="returnObj">
+    <button (click)="returnTo()" aria-label="All" class="button primary col-8" style="width: 100%">
+      <mat-icon>{{icon}}</mat-icon>
+      {{getName(returnObj)}}
     </button>
-    <mat-menu #menu="matMenu" yPosition="above">
-      <div (click)="$event.stopPropagation();" class="filters">
-        <select [(ngModel)]="filter" class="filter" mat-menu-item>
-          <option selected value="all">Tous</option>
-          <option value="true">Joués</option>
-          <option value="false">A Installer</option>
-        </select>
-        <mat-divider></mat-divider>
-        <div class="search" mat-menu-item>
-          <input [(ngModel)]="value" placeholder="Titre">
-          <mat-icon class="col-2">search</mat-icon>
-        </div>
-      </div>
-    </mat-menu>
-  </div>
+    <div class="nested">
+      <app-title-list></app-title-list>
+    </div>
+  </ng-container>
+<router-outlet *ngIf="!returnObj"></router-outlet>
 </div>

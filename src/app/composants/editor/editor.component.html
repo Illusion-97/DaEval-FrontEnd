@@ -17,9 +17,9 @@
   </span>
   <span class="col-12">
   <ul class="actions col-10">
-    <li><input [disabled]="!form.valid" [disabled]="jeu && (abuseGard.getPending() | async).includes(jeu.id)" class="button primary" type="submit"
+    <li><input [disabled]="!form.valid" [disabled]="jeu && (abuseGard.getPending() | async).includes(jeu.selected.id)" class="button primary" type="submit"
                value="Enregistrer"></li>
-    <li *ngIf="jeu"><button (click)="remove()" [disabled]="jeu && (abuseGard.getPending() | async).includes(jeu.id)"
+    <li *ngIf="jeu"><button (click)="remove()" [disabled]="jeu && (abuseGard.getPending() | async).includes(jeu.selected.id)"
                             class="button primary">Supprimer</button></li>
   </ul>
   </span>
