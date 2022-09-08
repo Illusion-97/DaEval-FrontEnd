@@ -1,0 +1,118 @@
+<!-- Main -->
+<div class="style1 h100" id="main">
+  <div class="container-fluid h100" >
+    <div class="row gtr-150 h100">
+      <div class="col-4 col-12-medium h100 br-inset">
+        <!-- Sidebar -->
+        <section id="sidebar" class="h100">
+          <div class="side">
+            <ng-container *ngIf="promotion">
+              <button [aria-label]="getPromotionName()" class="button primary col-8" style="width: 100%">
+                <mat-icon>{{getPromotionIcon()}}</mat-icon>
+                {{getPromotionName()}}
+              </button>
+              <div class="nested">
+                <div class="list scrollbar scrollbar-primary">
+                  <mat-list>
+                    <ng-container *ngFor="let item of inscrits ">
+                      <mat-list-item (click)="remove(item)" class="button">
+                        <h3 matLine>{{getUserName(item)}}</h3>
+                        <mat-icon matListIcon>delete</mat-icon>
+                      </mat-list-item>
+                    </ng-container>
+                  </mat-list>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="row bot aln-center">
+                  <button (click)="submit()" aria-label="Submit" class="button primary col-8">
+                    <mat-icon>check_circle</mat-icon>
+                    Enregistrer
+                  </button>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </section>
+      </div>
+      <div class="col-8 col-12-medium imp-medium card">
+        <section class="row aln-center h100">
+          <div style="overflow: hidden; padding: 1em; height: 100%">
+            <div *ngIf="promotion" class="card-container h100">
+              <h3>
+                Inscription à la promotion : {{getPromotionName()}}
+              </h3>
+              <div class="table-wrapper">
+                <table class="alt nomarg">
+                  <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Rechercher</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>
+                      <input type="text"name="nom" [(ngModel)]="filter.nom" placeholder="ADEKALOM">
+                    </td>
+                    <td>
+                      <input type="text" name="prenom" [(ngModel)]="filter.prenom" placeholder="Yanis">
+                    </td>
+                    <td>
+                      <button (click)="search()" aria-label="Rechercher" class="button primary" style="width: 100%">
+                        <mat-icon>search</mat-icon>
+                      </button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div *ngIf="totalUsers" class="table-wrapper">
+                <table class="alt nomarg align-center">
+                  <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Statut</th>
+                    <th>Inscrire</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let user of users">
+                    <td>{{user.nom}}</td>
+                    <td>{{user.prenom}}</td>
+                    <td>{{user.statut}}</td>
+                    <td>
+                      <button *ngIf="canAdd(user.id)" (click)="add(user)" aria-label="add" class="button primary" style="width: 100%">
+                        <mat-icon>add</mat-icon>
+                      </button>
+                    </td>
+                  </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td>
+                        <button [disabled]="page === 0" (click)="getPageUser(page - 1)" aria-label="Previous" class="button primary" style="width: 100%">
+                          <mat-icon>skip_previous</mat-icon>
+                        </button>
+                      </td>
+                      <td colspan="2">
+                        {{page + 1}}
+                      </td>
+                      <td>
+                        <button [disabled]="totalUsers === 0 || (page +1 ) === maxPage()" (click)="getPageUser(page + 1)" aria-label="Next" class="button primary" style="width: 100%">
+                          <mat-icon>skip_next</mat-icon>
+                        </button>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

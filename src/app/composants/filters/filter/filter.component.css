@@ -59,6 +59,7 @@
   height: 4em;
   align-content: center;
   margin-left: 0;
+  justify-content: space-evenly;
 }
 
 .mat-icon {

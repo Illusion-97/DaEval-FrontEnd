@@ -1,0 +1,11 @@
+<div *ngIf="size > pageSize" class="row bot align-center">
+  <button [disabled]="page === 0" (click)="setPage(page - 1)" aria-label="Previous" class="button primary col-3">
+    <mat-icon>skip_previous</mat-icon>
+  </button>
+  <div class="col-4" style="padding: 0">
+    {{page + 1}}
+  </div>
+  <button [disabled]="size === 0 || (page +1 ) === maxPage()" (click)="setPage(page + 1)" aria-label="Next" class="button primary col-3">
+    <mat-icon>skip_next</mat-icon>
+  </button>
+</div>

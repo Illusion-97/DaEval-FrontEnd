@@ -1,0 +1,23 @@
+<tr>
+  <td>Bloc de Compétences : </td>
+  <td>
+    <select name="titrePro" [formControl]="blocCompetencesId">
+      <option [ngValue]="0" selected disabled>Selectionner</option>
+    </select>
+    <mat-error *ngIf="blocCompetencesId.touched && blocCompetencesId.hasError('required')">Bloc de compétence requis</mat-error>
+  </td>
+</tr>
+<tr>
+  <td>Titre : </td>
+  <td>
+    <input type="text" [formControl]="titre" placeholder="Competence" required>
+    <mat-error *ngIf="titre.touched && titre.hasError('required')">Nom de la compétence requis</mat-error>
+  </td>
+</tr>
+<tr>
+  <td>Description : </td>
+  <td>
+    <textarea [formControl]="description" required></textarea>
+    <mat-error *ngIf="description.touched && description.hasError('required')">Description de la compétence requise</mat-error>
+  </td>
+</tr>

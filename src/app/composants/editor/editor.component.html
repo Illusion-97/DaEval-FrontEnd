@@ -1,6 +1,5 @@
-<ng-progress [color]="'#e44c65'" [fixed]="false" [meteor]="false" [thick]="true" id="editorBar"></ng-progress>
-<h2 mat-dialog-title>Game Editor</h2>
-<form (submit)="submit()" [formGroup]="form" class="row">
+
+
   <input [formControl]="id" type="hidden">
   <mat-form-field [floatLabel]="'auto'" appearance="fill" class="col-12">
     <mat-label>Titre</mat-label>
@@ -23,4 +22,3 @@
                             class="button primary">Supprimer</button></li>
   </ul>
   </span>
-</form>

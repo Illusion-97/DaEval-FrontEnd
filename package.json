@@ -24,6 +24,7 @@
     "core-js": "^3.22.2",
     "gsap": "^3.10.4",
     "mdb-angular-ui-kit": "^2.1.0",
+    "ng-mat-select-infinite-scroll": "^3.0.1",
     "ngx-progressbar": "^8.0.0",
     "ngx-scrollbar": "^9.0.2",
     "ngx-toastr": "^14.3.0",

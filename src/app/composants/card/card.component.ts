@@ -1,13 +1,19 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {Select} from '../../../models/Select';
-import {EditorComponent} from '../editor/editor.component';
+import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {LibraryService} from '../../../services/library.service';
 import {NgProgress, NgProgressRef} from 'ngx-progressbar';
-import {AntiAbuseService} from '../../../services/anti-abuse.service';
-import {CHILD_TYPES_BY_TYPE, DTO_TYPES, ICON_BY_TYPE, NAME_BY_TYPE, ROUTE_BY_TYPE, TYPE_NAME} from '../../../environments/environment';
-import {Subscription} from 'rxjs';
+import {
+  CHILD_TYPES_BY_TYPE,
+  DTO_TYPES,
+  FORM_BY_TYPE,
+  ICON_BY_TYPE,
+  NAME_BY_TYPE,
+  ROUTE_BY_TYPE,
+  TYPE_NAME
+} from '../../../environments/environment';
+import {finalize, Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
+import {EditorComponent} from '../forms/editor/editor.component';
 
 @Component({
   selector: 'app-card',
@@ -25,6 +31,7 @@ export class CardComponent implements OnInit {
   CHILD_TYPES_BY_TYPE = CHILD_TYPES_BY_TYPE;
   ROUTE_BY_TYPE = ROUTE_BY_TYPE;
   TYPE_NAME = TYPE_NAME;
+  FORM_BY_TYPE = FORM_BY_TYPE;
 
   constructor(private router: Router, private route: ActivatedRoute, private dialog: MatDialog,
               private service: LibraryService, private progress: NgProgress,
@@ -43,26 +50,37 @@ export class CardComponent implements OnInit {
       });
   }
 
-  update() {
-    const copy = {...this.selected};
-    this.progressRef.start();
-   /* this.service.save(copy).subscribe(jeu => {
-      this.service.update.emit(jeu);
-      this.abuseGard.setFree(jeu.id);
-    });*/
-  }
-
   navigate(destType: DTO_TYPES) {
     this.service.navigate.emit({type: this.type, selected: this.selected});
-    this.router.navigate([this.router.routerState.snapshot.url + '/' + this.selected.id + ROUTE_BY_TYPE.get(destType)]);
+    this.router.navigate([this.router.routerState.snapshot.url + '/' + this.selected.id + ROUTE_BY_TYPE.get(destType)])
+      .then(() => {
+        this.selected = undefined;
+        this.type = undefined;
+      })
+      .catch(reason => console.log(reason));
   }
 
-  openDialog(): void {
-    this.dialog.open(EditorComponent, {data: this.selected});
+  openDialog(create: boolean): void {
+    this.dialog.open(EditorComponent, {data: {selected: (create) ? undefined : this.selected, type: this.type}})
+      .afterClosed().subscribe(data => {
+      if (data.submited && data.result) {
+        this.progressRef.start();
+        this.service.handle(create ? 'post' : 'put', this.type, 'Save', data.result)
+          .pipe(finalize(() => this.progressRef.complete())).subscribe();
+      }
+    });
   }
 
   getName(item: any): string {
     return NAME_BY_TYPE(this.type, item);
+  }
+
+  getIcon(): string {
+    return ICON_BY_TYPE.get(this.type);
+  }
+
+  isEditable(type: DTO_TYPES) {
+    return FORM_BY_TYPE.get(type).editable;
   }
 }
 

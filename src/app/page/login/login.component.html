@@ -1,0 +1,45 @@
+<section class="row aln-center" style="height: 100%">
+  <div style="overflow: hidden; padding: 0">
+    <div class="card-container">
+      <h3>
+        Connexion
+      </h3>
+      <div class="table-wrapper">
+        <table class="alt">
+          <tbody>
+            <tr>
+              <td>Email : </td>
+              <td>
+                  <input type="text" name="email" [formControl]="controlInf.control">
+                <ng-container *ngIf="controlInf.control && controlInf.control.touched">
+                  <ng-container *ngFor="let error of controlInf.errorMessages.keys()">
+                    <mat-error *ngIf="controlInf.control.hasError(error)">{{controlInf.errorMessages.get(error)}}</mat-error>
+                  </ng-container>
+                </ng-container>
+              </td>
+            </tr>
+            <tr>
+              <td>Mot de Passe : </td>
+              <td>
+                <input type="password" name="password" [formControl]="controlInf.control">
+                <ng-container *ngIf="controlInf.control && controlInf.control.touched">
+                  <ng-container *ngFor="let error of controlInf.errorMessages.keys()">
+                    <mat-error *ngIf="controlInf.control.hasError(error)">{{controlInf.errorMessages.get(error)}}</mat-error>
+                  </ng-container>
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+          <tr>
+            <td colspan="2">
+              <input [disabled]="!object.filter && (!formInf.form.valid || (abuseGard.getPending() | async).includes(object))" class="button primary" type="submit"
+                     value="Se Connecter">
+            </td>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

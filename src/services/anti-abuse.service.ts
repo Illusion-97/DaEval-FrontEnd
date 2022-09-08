@@ -1,25 +1,26 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
+import {Select} from '../models/Select';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AntiAbuseService {
 
-  private pending: number[] = Array.of();
+  private pending: Select[] = Array.of();
 
   constructor() {
   }
 
-  engage(id: number) {
-    this.pending.push(id);
+  engage(obj: Select) {
+    this.pending.push(obj);
   }
 
-  getPending(): BehaviorSubject<number[]> {
+  getPending(): BehaviorSubject<Select[]> {
     return new BehaviorSubject(this.pending);
   }
 
-  setFree(id: number) {
-    this.pending = this.pending.filter(n => n !== id);
+  setFree(obj: Select) {
+    this.pending = this.pending.filter(n => n !== obj);
   }
 }

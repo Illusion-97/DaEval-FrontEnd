@@ -20,17 +20,21 @@ export class LibraryService {
     return this.handle('get', type, 'All');
   }
 
-  handle(request: string, type: DTO_TYPES, methode: string, body?: any, params?: ParamMap) {
+  login(infos) {
+    return this.handle('post', DTO_TYPES.UTILISATEURS, 'checkLogin', infos);
+  }
+
+  handle(request: string, type: DTO_TYPES, methode: string, body?: any, params?: ParamMap, page?: number, max?: number) {
     const service = API_SERVICE_BY_TYPE.get(type);
     switch (request) {
       case 'get':
-        return this.get(this.getUrl(service, methode), this.getOptions(params));
+        return this.get(this.getUrl(service, methode), this.getOptions(params, page, max));
       case 'post':
-        return this.post(this.getUrl(service, methode), body, this.getOptions(params));
+        return this.post(this.getUrl(service, methode), body, this.getOptions(params, page, max));
       case 'put':
-        return this.put(this.getUrl(service, methode), body, this.getOptions(params));
+        return this.put(this.getUrl(service, methode), body, this.getOptions(params, page, max));
       case 'delete':
-        return this.delete(this.getUrl(service, methode), this.getOptions(params));
+        return this.delete(this.getUrl(service, methode), this.getOptions(params, page, max));
       default:
         return undefined;
     }
@@ -38,7 +42,6 @@ export class LibraryService {
 
   getUrl(service: string, methode: string): string {
     const url = API_URL + service + '/' + methode;
-    console.log(url);
     return url;
   }
 
@@ -48,11 +51,27 @@ export class LibraryService {
     return httpParams;
   }
 
-  getOptions(params?: ParamMap) {
+  getHttpPageParams(httpParams: HttpParams, page?: number, max?: number): HttpParams {
+    if (page !== undefined && max !== undefined) {
+      httpParams = httpParams.append('page', page);
+      httpParams = httpParams.append('max', max);
+    }
+    return  httpParams;
+  }
+
+  getOptions(params?: ParamMap, page?: number, max?: number) {
     return {
       observe: 'events',
       reportProgress: true,
-      params: this.getHttpParams(params)
+      params: this.getHttpPageParams(this.getHttpParams(params), page, max)
+    };
+  }
+
+  getPageOptions(page: number, max: number, params?: Map<string, string>) {
+    let httpParams = new HttpParams();
+    if (params) { params.forEach((value, key) => httpParams = httpParams.append(key, value)); }
+    return {
+      params: this.getHttpPageParams(httpParams, page, max)
     };
   }
 
@@ -69,4 +88,7 @@ export class LibraryService {
     return this.http.delete<HttpEvent<any>>(url, options);
   }
 
+  getForSelect(type: DTO_TYPES, page: number, max: number, method: string = 'AllByPage', vals?: Map<string, string>): Observable<any[]> {
+    return this.http.get<any[]>(this.getUrl(API_SERVICE_BY_TYPE.get(type), method), this.getPageOptions(page, max, vals));
+  }
 }

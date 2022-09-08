@@ -1,10 +1,7 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef} from '@angular/core';
-import {DTO_TYPES, ICON_BY_TYPE, NAME_BY_TYPE, ROUTE_BY_TYPE} from '../../../environments/environment';
-import {ActivatedRoute, ParamMap, Router} from '@angular/router';
-import {HttpEventType} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {DTO_TYPES, ICON_BY_TYPE, NAME_BY_TYPE} from '../../../environments/environment';
+import {ActivatedRoute, Router} from '@angular/router';
 import {LibraryService} from '../../../services/library.service';
-import {NgProgress, NgProgressRef} from 'ngx-progressbar';
-import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-title-list',
@@ -17,7 +14,7 @@ export class TitleListComponent implements OnInit {
   returnObj: any;
   icon = '';
 
-  constructor(private router: Router, private service: LibraryService) {
+  constructor(private router: Router, private service: LibraryService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {

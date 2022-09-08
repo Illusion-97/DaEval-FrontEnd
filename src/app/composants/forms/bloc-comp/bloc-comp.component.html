@@ -1,0 +1,23 @@
+<tr>
+  <td>Titre professionnel : </td>
+  <td>
+    <select name="titrePro" [formControl]="titreProfessionnelId">
+      <option [ngValue]="0" selected disabled>Selectionner</option>
+    </select>
+    <mat-error *ngIf="titreProfessionnelId.touched && titreProfessionnelId.hasError('required')">Titre Professionnel requis</mat-error>
+  </td>
+</tr>
+<tr>
+  <td>Titre : </td>
+  <td>
+    <input type="text" [formControl]="titre" placeholder="Bloc" required>
+    <mat-error *ngIf=" titre.touched && titre.hasError('required')">Nom du bloc requis</mat-error>
+  </td>
+</tr>
+<tr>
+  <td>Description : </td>
+  <td>
+    <input type="text" [formControl]="description" required>
+    <mat-error *ngIf="description.touched && description.hasError('required')">Description du bloc requis</mat-error>
+  </td>
+</tr>

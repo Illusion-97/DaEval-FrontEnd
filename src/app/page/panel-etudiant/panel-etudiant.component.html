@@ -1,0 +1,136 @@
+<!-- Main -->
+<div class="style1 h100" id="main">
+  <div class="container-fluid h100" >
+    <div class="row gtr-150 h100">
+      <div class="col-4 col-12-medium h100 br-inset">
+        <!-- Sidebar -->
+        <section id="sidebar" class="h100">
+          <div class="side">
+            <ng-container *ngIf="etudiant">
+              <div class="button primary col-8" style="width: 100%">
+                <mat-icon>{{getPromotionIcon()}}</mat-icon>
+                Promotions
+              </div>
+              <div class="nested">
+                <div class="list scrollbar scrollbar-primary">
+                  <mat-list>
+                    <ng-container *ngFor="let item of promotions ">
+                      <mat-list-item (click)="select(item)" class="button">
+                        <h3 matLine>{{getPromotionName(item)}}</h3>
+                      </mat-list-item>
+                    </ng-container>
+                  </mat-list>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </section>
+      </div>
+      <div class="col-8 col-12-medium imp-medium card">
+        <section class="row aln-center h100">
+          <div style="overflow: hidden; padding: 0.5em; height: 100%; width: 100% ">
+            <div *ngIf="promotion.value" class="card-container h100">
+              <div class="row float" style="width: 50%; justify-content: space-evenly">
+                <ng-container *ngIf="currentType == DTO_TYPES.EVALUATION">
+                  <button [routerLink]="['bilan',etudiant.id,promotion.value.id]" aria-label="bilan" class="button primary col-5">
+                    <mat-icon>view_list</mat-icon> Bilan
+                  </button>
+                  <button (click)="currentType = DTO_TYPES.POSITION" class="button primary col-5">
+                    <mat-icon>{{ICON_BY_TYPE.get(DTO_TYPES.POSITION)}}</mat-icon> {{TYPE_NAME.get(DTO_TYPES.POSITION)}}
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="currentType == DTO_TYPES.POSITION">
+                  <button [routerLink]="['grille',etudiant.id,promotion.value.id]" aria-label="grille" class="button primary col-5">
+                    <mat-icon>view_module</mat-icon> Grille de Positionnement
+                  </button>
+                  <button (click)="currentType = DTO_TYPES.EVALUATION" class="button primary col-5">
+                    <mat-icon>{{ICON_BY_TYPE.get(DTO_TYPES.EVALUATION)}}</mat-icon> {{TYPE_NAME.get(DTO_TYPES.EVALUATION)}}
+                  </button>
+                </ng-container>
+              </div>
+              <h3 class="h10">
+                {{TYPE_NAME.get(currentType)}}
+              </h3>
+              <div class="table-wrapper h90-1">
+                <table class="alt nomarg h100">
+                  <thead class="h10">
+                  <tr>
+                    <td colspan="2">
+                      <mat-form-field appearance="fill" style="width: 100%">
+                        <mat-label>Bloc de Compétence</mat-label>
+                        <mat-select [ngModel]="filter.blocCompetencesId" (valueChange)="blocChange($event)"
+                                    [name]="'blocCompetence'" >
+                          <mat-option *ngFor="let bloc of blocCompetences" [value]="bloc.id">{{getBlocName(bloc)}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </td>
+                  </tr>
+                  </thead>
+                  <tbody class="h90">
+                  <tr>
+                    <td *ngIf="currentType == DTO_TYPES.EVALUATION">
+                      <table class="alt nomarg align-center sub-tab">
+                        <thead>
+                        <tr>
+                          <th>Epreuve</th>
+                          <th>Note</th>
+                        </tr>
+                        </thead>
+                        <tbody *ngIf="datas.get(DTO_TYPES.EVALUATION).total">
+                        <tr *ngFor="let eval of datas.get(DTO_TYPES.EVALUATION).array">
+                          <td>{{eval.epreuveTitre}}</td>
+                          <td>{{eval.note}}</td>
+                        </tr>
+                        </tbody>
+                      </table>
+                      <app-paginate [size]="datas.get(DTO_TYPES.EVALUATION).total" [pageSize]="pageSize" (pageChange)="getPage(DTO_TYPES.EVALUATION,$event)"></app-paginate>
+                    </td>
+                    <td  *ngIf="currentType == DTO_TYPES.POSITION">
+                      <table class="alt nomarg align-center sub-tab">
+                        <thead>
+                        <tr>
+                          <th>Compétence</th>
+                          <th>Avant</th>
+                          <th>Après</th>
+                        </tr>
+                        </thead>
+                        <tbody *ngIf="datas.get(DTO_TYPES.POSITION).total">
+                        <tr *ngFor="let position of datas.get(DTO_TYPES.POSITION).array">
+                          <td>{{position.competenceTitre}}</td>
+                          <td>
+                            <mat-form-field appearance="fill" style="width: 100%">
+                              <mat-select [(ngModel)]="position.avant"
+                                          [name]="'avant'" >
+                                <mat-option *ngFor="let niveau of niveaux" [value]="niveau.id">{{niveau.name}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field appearance="fill" style="width: 100%">
+                              <mat-select [(ngModel)]="position.apres"
+                                          [name]="'apres'" >
+                                <mat-option *ngFor="let niveau of niveaux" [value]="niveau.id">{{niveau.name}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <button [disabled]="progressRef.isStarted" (click)="submit(position)" aria-label="Submit" class="button primary">
+                              <mat-icon>check_circle</mat-icon>
+                            </button>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                      <app-paginate [size]="datas.get(DTO_TYPES.POSITION).total" [pageSize]="pageSize" (pageChange)="getPage(DTO_TYPES.POSITION,$event)"></app-paginate>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

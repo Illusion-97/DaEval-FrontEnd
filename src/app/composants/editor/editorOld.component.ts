@@ -7,11 +7,11 @@ import {NgProgress, NgProgressRef} from 'ngx-progressbar';
 import {AntiAbuseService} from '../../../services/anti-abuse.service';
 
 @Component({
-  selector: 'app-editor',
+  selector: 'app-editorOld',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.css']
 })
-export class EditorComponent implements OnInit {
+export class EditorOldComponent implements OnInit {
 
   jeu: Select = undefined;
 
@@ -22,7 +22,7 @@ export class EditorComponent implements OnInit {
   played = new FormControl(false);
   progressRef: NgProgressRef;
 
-  constructor(public dialogRef: MatDialogRef<EditorComponent>,
+  constructor(public dialogRef: MatDialogRef<EditorOldComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: Select,
               private service: LibraryService, fb: FormBuilder, private progress: NgProgress, public abuseGard: AntiAbuseService) {
     this.form = fb.group(

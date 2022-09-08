@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {EditorComponent} from '../editor/editor.component';
+import {EditorOldComponent} from '../editor/editorOld.component';
 import {DTO_TYPES, ROUTE_BY_TYPE} from '../../../environments/environment';
-import {HttpEventType} from '@angular/common/http';
-import {NgProgress, NgProgressRef} from 'ngx-progressbar';
 import {Router} from '@angular/router';
 
 @Component({
@@ -14,7 +12,7 @@ import {Router} from '@angular/router';
 export class HeaderComponent implements OnInit {
 
 
-  title = 'Library';
+  title = 'DaEval';
   anim = true;
   canevas: HTMLElement = undefined;
   DTO_TYPES = DTO_TYPES;
@@ -28,7 +26,7 @@ export class HeaderComponent implements OnInit {
   }
 
   openDialog(): void {
-    this.dialog.open(EditorComponent);
+    this.dialog.open(EditorOldComponent);
   }
 
   handleCanevas() {

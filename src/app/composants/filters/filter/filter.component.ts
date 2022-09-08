@@ -1,11 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgProgress, NgProgressRef} from 'ngx-progressbar';
-import {ActivatedRoute, ChildActivationEnd, ParamMap, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {HttpEventType} from '@angular/common/http';
-import {DTO_TYPES, ICON_BY_TYPE, ROUTE_BY_TYPE} from '../../../../environments/environment';
+import {DTO_TYPES, FORM_BY_TYPE, ICON_BY_TYPE, NAME_BY_TYPE, ROUTE_BY_TYPE} from '../../../../environments/environment';
 import {LibraryService} from '../../../../services/library.service';
-import {NAME_BY_TYPE} from '../../../../environments/environment';
-import {filter} from 'rxjs';
+import {ActiveRouteService} from '../../../../services/active-route.service';
+import {EditorComponent} from '../../forms/editor/editor.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-filter',
@@ -22,13 +23,15 @@ export class FilterComponent implements OnInit {
   previous: any = undefined;
   source: any[] = [];
   progressRef: NgProgressRef;
-  params: ParamMap;
   icon = '';
   DTO_TYPES = DTO_TYPES;
   ROUTE_BY_TYPE = ROUTE_BY_TYPE;
+  FORM_BY_TYPE = FORM_BY_TYPE;
+  formInf: any;
 
   constructor(private router: Router, private route: ActivatedRoute,
-              private service: LibraryService, private progress: NgProgress) {
+              private service: LibraryService, private progress: NgProgress,
+              private routeService: ActiveRouteService, private dialog: MatDialog) {
   }
 
   filter(): void { this.filtered = this.source.filter(() => true); }
@@ -36,11 +39,11 @@ export class FilterComponent implements OnInit {
   ngOnInit(): void {
     this.progressRef = this.progress.ref('progressBar');
     this.route.data.subscribe((data) => {
-      this.type = data['type'];
+      this.service.select.next({type: this.type = data['type'], selected: undefined});
       this.method = data['method'];
     });
     this.icon = ICON_BY_TYPE.get(this.type);
-    this.params = this.route.snapshot.paramMap;
+    this.routeService.params = this.route.snapshot.paramMap;
     this.service.select.subscribe(select => {
       if (select) {
         this.selected = select.selected;
@@ -51,7 +54,8 @@ export class FilterComponent implements OnInit {
         this.previous = previous.selected;
       }
     });
-    this.get(this.selected);
+    this.initFilter();
+    this.get();
   }
 
   select(item) {
@@ -59,7 +63,22 @@ export class FilterComponent implements OnInit {
     this.service.select.next({type: this.type, selected: item});
   }
 
-  get(item) {
+  initFilter() {
+    this.formInf = FORM_BY_TYPE.get(this.type).getObject();
+    const params = this.routeService.params;
+    params.keys.filter(key => Object.keys(this.formInf).includes(key)).forEach(key => {
+      const val = +params.get(key);
+      this.formInf[key] = (val);
+      /*const controlInf = formInf.getControlInf(key);
+      if (controlInf) {
+        const control = controlInf.control;
+        control.setValue(val);
+        control.disable();
+      }*/
+    });
+  }
+
+  get() {
     if (!this.service) { return; }
     this.progressRef = (this.selected === undefined)
       ? this.progress.ref('progressBar')
@@ -67,18 +86,31 @@ export class FilterComponent implements OnInit {
     if (!this.progressRef.isStarted) {
       this.progressRef.start();
     }
-    const subscription = this.service.handle('get', this.type, this.method, undefined, this.params).subscribe(event => {
-      if (event.type === HttpEventType.Response) {
-        this.progressRef.complete();
-        this.source = event.body;
-        this.selected = item;
-        this.filter();
-        subscription.unsubscribe();
-      }
-    });
+    this.getPage();
+  }
+
+  private getPage() {
+    const subscription = this.service.handle('post', this.type, 'FilteredByPage', this.formInf, undefined, 0, 10)
+      .subscribe(event => {
+        if (event.type === HttpEventType.Response) {
+          this.progressRef.complete();
+          this.source = event.body;
+          this.filter();
+          subscription.unsubscribe();
+        }
+      });
   }
 
   getName(item: any): string {
     return NAME_BY_TYPE(this.type, item);
+  }
+
+  openDialog(): void {
+    this.dialog.open(EditorComponent, {data: {selected: undefined, type: this.type, filter: true, params: this.routeService.params}})
+      .afterClosed().subscribe(data => {
+        if (data.submited) {
+          this.getPage();
+        }
+    });
   }
 }

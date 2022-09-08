@@ -26,10 +26,26 @@ body {
   color: #e44c65;
 }
 
+.mat-date-range-input-start-wrapper {
+  height: 60px;
+  width: calc(50% - 4px);
+}
+
+.mat-form-field-suffix {
+  top: 24px;
+}
+
 .mat-form-field-label, .mat-hint {
   color: #fff9;
 }
 
+.mat-form-field-wrapper {
+  padding: 0;
+}
+
+.mat-form-field-underline {
+   bottom: 0;
+}
 .mat-checkbox-frame {
   border-color: #fff9;
 }
@@ -39,4 +55,8 @@ body {
   top: 0;
   left: 0;
   z-index: -100;
+}
+
+.mat-select-value {
+  color: rgba(255, 255, 255, 0.75);
 }
