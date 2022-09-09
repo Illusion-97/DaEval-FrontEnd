@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {EditorOldComponent} from '../editor/editorOld.component';
 import {DTO_TYPES, ROUTE_BY_TYPE} from '../../../environments/environment';
 import {Router} from '@angular/router';
+import {AuthenticationService} from '../../../services/authentication.service';
 
 @Component({
   selector: 'app-header',
@@ -11,22 +10,19 @@ import {Router} from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
-
+  user: any;
   title = 'DaEval';
   anim = true;
   canevas: HTMLElement = undefined;
   DTO_TYPES = DTO_TYPES;
   ROUTE_BY_TYPE = ROUTE_BY_TYPE;
 
-  constructor(private router: Router, public dialog: MatDialog) {
+  constructor(private router: Router, private service: AuthenticationService) {
   }
 
   ngOnInit() {
     this.canevas = document.querySelector('.c');
-  }
-
-  openDialog(): void {
-    this.dialog.open(EditorOldComponent);
+    this.service.currentUser.subscribe(value => this.user = value);
   }
 
   handleCanevas() {
@@ -34,6 +30,10 @@ export class HeaderComponent implements OnInit {
       this.anim = !this.anim;
       (this.anim) ? this.canevas.removeAttribute('stopped') : this.canevas.setAttribute('stopped', 'true');
     }
+  }
+
+  logout() {
+    this.service.logout();
   }
 }
 

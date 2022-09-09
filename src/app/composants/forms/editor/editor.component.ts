@@ -25,6 +25,7 @@ export class EditorComponent implements OnInit {
   TYPE_NAME = TYPE_NAME;
   CONTROL_TYPE = ControlInputType;
   subscriptions: Subscription[] = [];
+  filter = false;
 
   constructor(public dialogRef: MatDialogRef<EditorComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: Select,
@@ -47,7 +48,7 @@ export class EditorComponent implements OnInit {
         this.formInf.form.patchValue(this.object.selected ? this.object.selected : this.routeService.paramsObject());
       }
     });
-    const c = this.formInf.controls.filter( control => control.inputType === ControlInputType.SELECT);
+    const c = this.formInf.controls.filter(control => control.inputType === ControlInputType.SELECT);
     if (c.length > 0) {
       this.countdown = new BehaviorSubject<number>(c.length);
       this.countdown.subscribe(n => {
@@ -75,11 +76,13 @@ export class EditorComponent implements OnInit {
   remove() {
     this.abuseGard.engage(this.object.selected);
     this.progressRef.start();
-    this.service.handle('delete', this.object.type, 'ById').subscribe(() => {
-      this.service.update.emit(undefined);
-      this.abuseGard.setFree(this.object);
-      this.progressRef.complete();
-      this.onNoClick(true);
+    this.service.handle('delete', this.object.type, 'ById?id=' + this.object.selected.id).subscribe(rep => {
+      if (rep.type === HttpEventType.Response) {
+        this.service.update.emit(undefined);
+        this.abuseGard.setFree(this.object);
+        this.progressRef.complete();
+        this.onNoClick(true);
+      }
     });
   }
 
@@ -137,7 +140,7 @@ export class EditorComponent implements OnInit {
     }
     const max = 10;
     this.service.getForSelect(controlInf.sourceType,
-      Math.floor(controlInf.currTotal / max),  max, controlInf.method, vals).pipe(map(res => {
+      Math.floor(controlInf.currTotal / max), max, controlInf.method, vals).pipe(map(res => {
       if (current) {
         res.push(current);
       }
@@ -153,9 +156,9 @@ export class EditorComponent implements OnInit {
   }
 
   private getSourceTotal(controlInf: ControlInfo) {
-      this.service.handle('get', controlInf.sourceType, 'Count').subscribe({
-        next: count => controlInf.sourcetotal = count['body'],
-        error: () => controlInf.sourcetotal = 0
-      });
+    this.service.handle('get', controlInf.sourceType, 'Count').subscribe({
+      next: count => controlInf.sourcetotal = count['body'],
+      error: () => controlInf.sourcetotal = 0
+    });
   }
 }

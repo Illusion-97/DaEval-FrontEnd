@@ -1,20 +1,20 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {PromotionComponent} from './promotion.component';
+import {MatErrorsComponent} from './mat-errors.component';
 
-describe('PromotionComponent', () => {
-  let component: PromotionComponent;
-  let fixture: ComponentFixture<PromotionComponent>;
+describe('MatErrorsComponent', () => {
+  let component: MatErrorsComponent;
+  let fixture: ComponentFixture<MatErrorsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PromotionComponent ]
+      declarations: [MatErrorsComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PromotionComponent);
+    fixture = TestBed.createComponent(MatErrorsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

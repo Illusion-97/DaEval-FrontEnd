@@ -3,9 +3,14 @@
   <h1 id="logo"><a href="/">{{title}}</a></h1>
   <nav id="nav">
     <ul>
-      <li><a [routerLink]="'/Panel'" class="button primary">
-        Panel Etudiant
-      </a></li>
+      <ng-container *ngIf="user">
+        <li><a [routerLink]="'/Panel'" class="button primary">
+          Panel Etudiant
+        </a></li>
+        <li><a (click)="logout()" aria-label="Log out" class="button primary">
+          <mat-icon style="vertical-align: middle">exit_to_app</mat-icon>
+        </a>
+      </ng-container>
       <li><a [matMenuTriggerFor]="menu" aria-label="settings" class="button primary">
         <mat-icon style="vertical-align: middle">settings</mat-icon>
       </a>

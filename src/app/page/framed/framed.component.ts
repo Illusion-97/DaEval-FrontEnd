@@ -10,7 +10,8 @@ export class FramedComponent implements OnInit {
 
   url = '';
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
     const paramMap = this.route.snapshot.paramMap;

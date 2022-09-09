@@ -1,7 +1,9 @@
-.bot {
+.page {
   align-content: center;
-  margin: 0.75em 0 0 0;
-  position: relative;
-  bottom: 0;
   justify-content: space-evenly;
+}
+
+.mat-icon {
+  vertical-align: middle;
+  padding-left: 0;
 }

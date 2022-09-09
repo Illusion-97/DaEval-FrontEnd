@@ -8,7 +8,8 @@ export class SelectObservableWaiterService {
 
   observerBehavior: BehaviorSubject<number>;
 
-  constructor() { }
+  constructor() {
+  }
 
   init() {
     this.observerBehavior = new BehaviorSubject<number>(0);

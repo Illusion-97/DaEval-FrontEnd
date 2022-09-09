@@ -1,7 +1,0 @@
-.side {
-  height: 100%;
-  padding: 1em;
-}
-.nested {
-  height: calc(100% - 3em);
-}

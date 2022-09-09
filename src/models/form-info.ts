@@ -7,7 +7,7 @@ export class FormInfo {
   editable: boolean;
   form: FormGroup;
   controls: ControlInfo[];
-  defaultValues: {[p: string]: any} = [];
+  defaultValues: { [p: string]: any } = [];
 
   constructor(controls: ControlInfo[], private fb: FormBuilder, editable: boolean = true) {
     this.editable = editable;
@@ -16,8 +16,8 @@ export class FormInfo {
   }
 
   getForm(controls: ControlInfo[]) {
-    const formControlConfig: {[p: string]: any} = [];
-    controls.forEach( controlInf => {
+    const formControlConfig: { [p: string]: any } = [];
+    controls.forEach(controlInf => {
       this.getFormControls(formControlConfig, controlInf);
     });
     formControlConfig['id'] = new FormControl(0);
@@ -25,12 +25,12 @@ export class FormInfo {
     this.form = this.fb.group(formControlConfig);
   }
 
-  getFormControls(formControls: {[p: string]: any}, controlInf: ControlInfo) {
+  getFormControls(formControls: { [p: string]: any }, controlInf: ControlInfo) {
     if (controlInf.control) {
       formControls[controlInf.name] = controlInf.control;
       this.defaultValues[controlInf.name] = controlInf.control.value;
     } else if (controlInf.rangedControl) {
-      controlInf.rangedControl.forEach( nestedInf => {
+      controlInf.rangedControl.forEach(nestedInf => {
         this.getFormControls(formControls, nestedInf);
       });
     }
@@ -46,7 +46,7 @@ export class FormInfo {
 }
 
 export enum ControlInputType {
-  TEXT, TEXTAREA, SELECT, DATE_RANGE
+  TEXT, TEXTAREA, SELECT, DATE_RANGE, NOTE, PASSWORD, RADIO
 }
 
 export class ControlInfo {
@@ -56,7 +56,6 @@ export class ControlInfo {
   inputType: ControlInputType;
   showed: boolean;
   enabled: boolean;
-  errorMessages?: Map<string, string>;
   holder: string;
   sourceType?: DTO_TYPES;
   sourceObs: Observable<any[]>;
@@ -68,13 +67,12 @@ export class ControlInfo {
   requiredControlName?: string;
 
   constructor(label: string, name: string, control: FormControl,
-              inputType: ControlInputType, holder: string, errorMessages: Map<string, string>, showed: boolean, sourceType?: DTO_TYPES,
+              inputType: ControlInputType, holder: string, showed: boolean, sourceType?: DTO_TYPES,
               rangedControl?: ControlInfo[], method?: string, requiredControlName?: string) {
     this.label = label;
     this.name = name;
     this.control = control;
     this.inputType = inputType;
-    this.errorMessages = errorMessages;
     this.showed = showed;
     this.holder = holder;
     this.sourceType = sourceType;

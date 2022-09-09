@@ -10,7 +10,7 @@ export abstract class FormChild {
   @Output()
   objectChange: EventEmitter<Select> = new EventEmitter<Select>();
   @Input()
-  form!: FormGroup ;
+  form!: FormGroup;
   @Output()
   formChange: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
 

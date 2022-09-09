@@ -23,7 +23,7 @@ export class PanelEtudiantComponent implements OnInit {
 
   currentType: DTO_TYPES = DTO_TYPES.EVALUATION;
 
-  datas: Map<DTO_TYPES, {total: number, array: any[]}> = new Map([
+  datas: Map<DTO_TYPES, { total: number, array: any[] }> = new Map([
     [DTO_TYPES.EVALUATION, {total: 0, array: []}],
     [DTO_TYPES.POSITION, {total: 0, array: []}]
   ]);
@@ -39,7 +39,8 @@ export class PanelEtudiantComponent implements OnInit {
 
 
   constructor(private service: LibraryService, private route: ActivatedRoute, private router: Router,
-              private progress: NgProgress, private abuseGard: AntiAbuseService) { }
+              private progress: NgProgress, private abuseGard: AntiAbuseService) {
+  }
 
   ngOnInit(): void {
     this.progressRef = this.progress.ref('progressBar');
@@ -69,7 +70,7 @@ export class PanelEtudiantComponent implements OnInit {
           });
       }
     });
-    this.service.handle('get', DTO_TYPES.NIVEAUX, 'Niveaux')
+    this.service.handle('get', DTO_TYPES.POSITION, 'Niveaux')
       .subscribe(event => {
         if (event.type === HttpEventType.Response) {
           this.niveaux = event.body;

@@ -3,6 +3,7 @@
   height: 100%;
   padding: 1em;
 }
+
 .nested {
   height: calc(100% - 3em);
 }
@@ -113,10 +114,6 @@ section {
   }
 }
 
-.nomarg {
-  margin: 0 !important;
-}
-
 table td {
   padding: 0;
 }
@@ -126,11 +123,11 @@ table td {
   height: 10%;
 }
 
-.h90{
+.h90 {
   height: 90%;
 }
 
-.h90-1{
+.h90-1 {
   height: calc(90% - 1em);
 }
 

@@ -1,0 +1,17 @@
+<div class="stepper-container h100">
+  <mat-stepper #stepper (selectionChange)="returnTo($event)" class="stepper">
+    <mat-step *ngFor="let parent of parents.value " [label]="parent.name" [state]="parent.type.toString()">
+    </mat-step>
+    <mat-step [label]="getDtoName()" [state]="type.toString()">
+      <router-outlet></router-outlet>
+    </mat-step>
+
+    <!-- Icon overrides. -->
+    <ng-template matStepperIcon="phone">
+      <mat-icon>call_end</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="chat">
+      <mat-icon>forum</mat-icon>
+    </ng-template>
+  </mat-stepper>
+</div>

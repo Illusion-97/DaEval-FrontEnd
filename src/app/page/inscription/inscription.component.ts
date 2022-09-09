@@ -22,7 +22,8 @@ export class InscriptionComponent implements OnInit {
   inscrits: any[] = [];
   page = 0;
 
-  constructor(private service: LibraryService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private service: LibraryService, private route: ActivatedRoute, private router: Router) {
+  }
 
   ngOnInit(): void {
     const promoId = this.route.snapshot.paramMap.get('id');
@@ -33,10 +34,11 @@ export class InscriptionComponent implements OnInit {
           const etuFilter = {
             promotionId: promoId
           };
-          this.service.handle('post', DTO_TYPES.ETUDIANT, 'FilteredSimpleUser', etuFilter, undefined)
+          this.service.handle('post', DTO_TYPES.ETUDIANT, 'FilteredSimpleUser', etuFilter)
             .subscribe(eventEtu => {
               if (eventEtu.type === HttpEventType.Response) {
                 this.inscrits = eventEtu.body;
+                this.search();
               }
             });
         }
@@ -44,7 +46,7 @@ export class InscriptionComponent implements OnInit {
   }
 
   search() {
-    this.service.handle('post', DTO_TYPES.UTILISATEURS, 'FilteredCount', this.filter, undefined)
+    this.service.handle('post', DTO_TYPES.UTILISATEURS, 'FilteredCount', this.filter)
       .subscribe(event => {
         if (event.type === HttpEventType.Response) {
           this.totalUsers = event.body;
@@ -78,6 +80,7 @@ export class InscriptionComponent implements OnInit {
   add(user: any) {
     this.inscrits.push(user);
   }
+
   remove(user: any) {
     this.inscrits = this.inscrits.filter(inscrit => inscrit.id !== user.id);
   }

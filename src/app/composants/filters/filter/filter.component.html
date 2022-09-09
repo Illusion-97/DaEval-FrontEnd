@@ -1,22 +1,75 @@
-<div class="list scrollbar scrollbar-primary">
+<div class="list scrollbar scrollbar-primary h100">
   <mat-list>
-    <ng-container *ngFor="let item of filtered ">
-      <mat-list-item (click)="select(item)"
-                     [ngClass]="{'button': true, 'primary': (selected !== undefined && getName(item) === getName(selected))}">
-        <mat-icon matListIcon>{{icon}}</mat-icon>
-        <h3 matLine>{{getName(item)}}</h3>
+    <ng-container *ngFor="let item of source; let index = index; let first = first">
+      <mat-list-item (click)="getWidth(item.id)" [matMenuTriggerData]="{item: item}"
+                     [matMenuTriggerFor]="menu" [ngClass]="{'button': true, 'primary': opened === item.id}">
+        <div class="w100">
+          <h3 matLine>{{getName(item)}}</h3>
+          <ng-container *ngIf="first">
+            <div #widthRef class="w100"></div>
+          </ng-container>
+        </div>
       </mat-list-item>
     </ng-container>
   </mat-list>
 </div>
+<mat-menu #menu="matMenu" (close)="opened = 0" class="panel scrollbar scrollbar-primary">
+  <ng-template let-item="item" matMenuContent>
+    <div [attr.style]="'width: '+ menuWidth +'px'">
+      <div class="table-wrapper w100">
+        <table class="alt" style="padding: 0">
+          <thead>
+          <tr>
+            <td colspan="2">
+              Détails
+            </td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>
+              <table class="alt nomarg align-center" style="padding: 0">
+                <tbody>
+                <tr *ngFor="let info of infos">
+                  <td>{{info.label}}</td>
+                  <td>{{item[info.name]}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </td>
+            <td style="vertical-align: middle">
+              <table class="nomarg">
+                <tbody>
+                <tr *ngFor="let child of CHILD_TYPES_BY_TYPE.get(type)">
+                  <td><a (click)="navigate(item, child)"
+                         class="button primary w100">{{getDtoName(child)}}</a></td>
+                </tr>
+                </tbody>
+              </table>
+
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-template>
+</mat-menu>
 <mat-divider></mat-divider>
 <div class="row bot aln-center">
-  <button *ngIf="!(method === 'All')" [routerLink]="[ROUTE_BY_TYPE.get(type)]" aria-label="All" class="button primary col-5">
-    <mat-icon>{{icon}}</mat-icon>
-    Tous
-  </button>
-  <button (click)="openDialog()" aria-label="settings" class="button primary col-5">
-    <mat-icon>settings</mat-icon>
-    Filtres
-  </button>
+  <div class="col-6 row">
+    <button *ngIf="!(method === 'All')" [routerLink]="[ROUTE_BY_TYPE.get(type)]" aria-label="All"
+            class="button primary col-5">
+      <mat-icon>{{icon}}</mat-icon>
+      Tous
+    </button>
+    <button (click)="openDialog()" aria-label="settings" class="button primary col-5">
+      <mat-icon>settings</mat-icon>
+      Filtres
+    </button>
+  </div>
+  <div class="col-6">
+    <app-paginate (pageChange)="getPage($event)" [pageSize]="pageSize" [size]="sourceTotal"></app-paginate>
+  </div>
+
 </div>

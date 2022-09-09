@@ -1,18 +1,18 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {LibraryComponent} from './page/library/library.component';
-import {HomeComponent} from './page/home/home.component';
 import {DTO_TYPES} from '../environments/environment';
 import {FilterComponent} from './composants/filters/filter/filter.component';
 import {InscriptionComponent} from './page/inscription/inscription.component';
 import {PanelEtudiantComponent} from './page/panel-etudiant/panel-etudiant.component';
 import {FramedComponent} from './page/framed/framed.component';
+import {LoginComponent} from './page/login/login.component';
+import {AuthGuard} from './interceptors/auth.guard';
 
 
 const utilChild: Routes = [
   {path: '', component: FilterComponent}
 ];
-
 const evalChild: Routes = [
   {path: '', component: FilterComponent}
 ];
@@ -31,16 +31,16 @@ const etudChild: Routes = [
   {path: '', component: FilterComponent},
   {path: ':etudiantId/Evaluations', data: {type: DTO_TYPES.EVALUATION, method: 'FilteredByPage'}, children: evalChild},
 ];
-const promoChild: Routes =  [
+const promoChild: Routes = [
   {path: ':promotionId/Etudiants', data: {type: DTO_TYPES.ETUDIANT, method: 'FilteredByPage'}, children: etudChild},
   {path: '', component: FilterComponent},
 ];
-const titreChild: Routes =  [
+const titreChild: Routes = [
   {path: ':titreProfessionnelId/Promotions', data: {type: DTO_TYPES.PROMOTION, method: 'FilteredByPage'}, children: promoChild},
   {path: ':titreProfessionnelId/BlocCompetences', data: {type: DTO_TYPES.BLOC_COMPETENCES, method: 'FilteredByPage'}, children: blocChild},
   {path: '', component: FilterComponent},
 ];
-const villeChild: Routes =  [
+const villeChild: Routes = [
   {path: ':villeId/Promotions', data: {type: DTO_TYPES.PROMOTION, method: 'FilteredByPage'}, children: promoChild},
   {path: ':villeId/Etudiants', data: {type: DTO_TYPES.ETUDIANT, method: 'FilteredByPage'}, children: etudChild},
   {path: '', component: FilterComponent, data: {type: DTO_TYPES.VILLE}},
@@ -49,7 +49,7 @@ const villeChild: Routes =  [
 const routes: Routes = [
   {path: 'BlocCompetences', component: LibraryComponent, data: {type: DTO_TYPES.BLOC_COMPETENCES, method: 'All'}, children: blocChild},
   {path: 'Etudiants', component: LibraryComponent, data: {type: DTO_TYPES.ETUDIANT, method: 'All'}, children: etudChild},
-  {path: 'TitresProfessionnels', component: LibraryComponent, data: {type: DTO_TYPES.TITRE_PRO, method: 'All'}, children: titreChild },
+  {path: 'TitresProfessionnels', component: LibraryComponent, data: {type: DTO_TYPES.TITRE_PRO, method: 'All'}, children: titreChild},
   {path: 'Villes', component: LibraryComponent, data: {type: DTO_TYPES.VILLE, method: 'All'}, children: villeChild},
   {path: 'Promotions', component: LibraryComponent, data: {type: DTO_TYPES.PROMOTION, method: 'All'}, children: promoChild},
   {path: 'Promotions/:id/Inscriptions', component: InscriptionComponent},
@@ -59,11 +59,24 @@ const routes: Routes = [
   {path: 'Utilisateurs', component: LibraryComponent, data: {type: DTO_TYPES.UTILISATEURS, method: 'All'}, children: utilChild},
   {path: 'Panel', component: PanelEtudiantComponent},
   {path: 'Panel/:obj/:uId/:pId', component: FramedComponent},
-  {path: '', component: HomeComponent},
+  {path: 'login', component: LoginComponent},
+  {path: '', redirectTo: 'TitresProfessionnels'},
 ];
 
+function applyAuthGard(): Routes {
+  return routes.map(route => {
+    if (route.path !== 'login') {
+      if (!route.canActivate) {
+        route.canActivate = [];
+      }
+      route.canActivate.push(AuthGuard);
+    }
+    return route;
+  });
+}
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(applyAuthGard())],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

@@ -1,0 +1,23 @@
+.stepper-container {
+  padding: 2em;
+}
+
+.stepper {
+  height: 100%;
+  background-color: rgba(39, 40, 51, 0.965);
+  border-radius: 5px;
+  border: white 2px inset;
+  overflow: hidden;
+}
+
+::ng-deep .mat-horizontal-stepper-header-container {
+  height: 10% !important;
+}
+
+::ng-deep .mat-horizontal-content-container {
+  height: 90% !important;
+}
+
+::ng-deep .mat-horizontal-stepper-content[aria-expanded="true"] {
+  height: 100% !important;
+}

@@ -5,13 +5,10 @@ import {MatIconModule} from '@angular/material/icon';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {CardComponent} from './composants/card/card.component';
 import {LibraryComponent} from './page/library/library.component';
-import {TitleListComponent} from './composants/title-list/title-list.component';
 import {HeaderComponent} from './composants/header/header.component';
 import {FooterComponent} from './composants/footer/footer.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {EditorOldComponent} from './composants/editor/editorOld.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -22,14 +19,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {HttpClientModule} from '@angular/common/http';
 import {MatDividerModule} from '@angular/material/divider';
 import {NgProgressModule} from 'ngx-progressbar';
-import {FilterVilleComponent} from './composants/filters/filter-ville/filter-ville.component';
-import {FilterTitreComponent} from './composants/filters/filter-titre/filter-titre.component';
-import {HomeComponent} from './page/home/home.component';
 import {FilterComponent} from './composants/filters/filter/filter.component';
-import {BlocCompComponent} from './composants/forms/bloc-comp/bloc-comp.component';
 import {EditorComponent} from './composants/forms/editor/editor.component';
-import {CompetenceComponent} from './composants/forms/competence/competence.component';
-import {PromotionComponent} from './composants/forms/promotion/promotion.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatSelectInfiniteScrollModule} from 'ng-mat-select-infinite-scroll';
@@ -39,31 +30,30 @@ import {PanelEtudiantComponent} from './page/panel-etudiant/panel-etudiant.compo
 import {PaginateComponent} from './composants/paginate/paginate.component';
 import {FramedComponent} from './page/framed/framed.component';
 import {SafePipe} from './composants/pipe/safe-pipe.pipe';
-import { LoginComponent } from './page/login/login.component';
+import {LoginComponent} from './page/login/login.component';
+import {MatErrorsComponent} from './composants/mat-errors/mat-errors.component';
+import {ListItemsComponent} from './composants/list-items/list-items.component';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MenuComponent} from './composants/menu/menu.component';
+import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CardComponent,
     LibraryComponent,
-    TitleListComponent,
     HeaderComponent,
     FooterComponent,
-    EditorOldComponent,
     EditorComponent,
     FilterComponent,
-    FilterVilleComponent,
-    FilterTitreComponent,
-    HomeComponent,
-    BlocCompComponent,
-    CompetenceComponent,
-    PromotionComponent,
     InscriptionComponent,
     PanelEtudiantComponent,
     PaginateComponent,
     FramedComponent,
     SafePipe,
-    LoginComponent
+    LoginComponent,
+    MatErrorsComponent,
+    ListItemsComponent,
+    MenuComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,8 +76,12 @@ import { LoginComponent } from './page/login/login.component';
     MatSelectModule,
     MatSelectInfiniteScrollModule,
     NgProgressModule,
+    MatStepperModule
   ],
-  providers: [],
+  providers: [{
+    provide: STEPPER_GLOBAL_OPTIONS,
+    useValue: {displayDefaultIndicatorType: false}
+  }],
   bootstrap: [AppComponent]
 })
 

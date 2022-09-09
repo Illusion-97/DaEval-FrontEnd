@@ -50,7 +50,6 @@
 }
 
 
-
 .mat-divider {
   border-top-color: rgb(255 255 255 / 30%);
 }
@@ -82,14 +81,3 @@ ul, p {
   height: calc(100% - 3em);
 }
 
-.scrollbar-primary::-webkit-scrollbar {
-  width: 12px;
-  background-color: rgba(39, 40, 51, 0.965);
-  border-radius: 10px;
-}
-
-.scrollbar-primary::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-  background-color: #e44c65;
-}

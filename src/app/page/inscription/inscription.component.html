@@ -1,10 +1,10 @@
 <!-- Main -->
 <div class="style1 h100" id="main">
-  <div class="container-fluid h100" >
+  <div class="container-fluid h100">
     <div class="row gtr-150 h100">
       <div class="col-4 col-12-medium h100 br-inset">
         <!-- Sidebar -->
-        <section id="sidebar" class="h100">
+        <section class="h100" id="sidebar">
           <div class="side">
             <ng-container *ngIf="promotion">
               <button [aria-label]="getPromotionName()" class="button primary col-8" style="width: 100%">
@@ -53,10 +53,10 @@
                   <tbody>
                   <tr>
                     <td>
-                      <input type="text"name="nom" [(ngModel)]="filter.nom" placeholder="ADEKALOM">
+                      <input [(ngModel)]="filter.nom" name="nom" placeholder="ADEKALOM" type="text">
                     </td>
                     <td>
-                      <input type="text" name="prenom" [(ngModel)]="filter.prenom" placeholder="Yanis">
+                      <input [(ngModel)]="filter.prenom" name="prenom" placeholder="Yanis" type="text">
                     </td>
                     <td>
                       <button (click)="search()" aria-label="Rechercher" class="button primary" style="width: 100%">
@@ -74,6 +74,7 @@
                   <tr>
                     <th>Nom</th>
                     <th>Prenom</th>
+                    <th>Mail</th>
                     <th>Statut</th>
                     <th>Inscrire</th>
                   </tr>
@@ -82,30 +83,34 @@
                   <tr *ngFor="let user of users">
                     <td>{{user.nom}}</td>
                     <td>{{user.prenom}}</td>
+                    <td>{{user.email}}</td>
                     <td>{{user.statut}}</td>
                     <td>
-                      <button *ngIf="canAdd(user.id)" (click)="add(user)" aria-label="add" class="button primary" style="width: 100%">
+                      <button (click)="add(user)" *ngIf="canAdd(user.id)" aria-label="add" class="button primary"
+                              style="width: 100%">
                         <mat-icon>add</mat-icon>
                       </button>
                     </td>
                   </tr>
                   </tbody>
                   <tfoot>
-                    <tr>
-                      <td>
-                        <button [disabled]="page === 0" (click)="getPageUser(page - 1)" aria-label="Previous" class="button primary" style="width: 100%">
-                          <mat-icon>skip_previous</mat-icon>
-                        </button>
-                      </td>
-                      <td colspan="2">
-                        {{page + 1}}
-                      </td>
-                      <td>
-                        <button [disabled]="totalUsers === 0 || (page +1 ) === maxPage()" (click)="getPageUser(page + 1)" aria-label="Next" class="button primary" style="width: 100%">
-                          <mat-icon>skip_next</mat-icon>
-                        </button>
-                      </td>
-                    </tr>
+                  <tr>
+                    <td>
+                      <button (click)="getPageUser(page - 1)" [disabled]="page === 0" aria-label="Previous"
+                              class="button primary" style="width: 100%">
+                        <mat-icon>skip_previous</mat-icon>
+                      </button>
+                    </td>
+                    <td colspan="2">
+                      {{page + 1}}
+                    </td>
+                    <td>
+                      <button (click)="getPageUser(page + 1)" [disabled]="totalUsers === 0 || (page +1 ) === maxPage()"
+                              aria-label="Next" class="button primary" style="width: 100%">
+                        <mat-icon>skip_next</mat-icon>
+                      </button>
+                    </td>
+                  </tr>
                   </tfoot>
                 </table>
               </div>

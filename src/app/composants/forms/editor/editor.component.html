@@ -1,63 +1,83 @@
 <ng-progress [color]="'#e44c65'" [fixed]="false" [meteor]="false" [thick]="true" id="editorBar"></ng-progress>
-<button class="button primary close-button" (click)="onNoClick(false)">
+<button (click)="onNoClick(false)" class="button primary close-button">
   <mat-icon>close</mat-icon>
 </button>
 <h2 mat-dialog-title>{{TYPE_NAME.get(object.type)}}</h2>
-<form *ngIf="formInf" (submit)="submit()" [formGroup]="formInf.form" class="row">
-<div class="container h100" >
-  <div class="row h100 align-items-center">
-    <div class="table-wrapper">
-      <table class="alt">
-        <tbody>
-        <ng-container *ngFor="let controlInf of formInf.controls">
-          <tr *ngIf="controlInf.showed">
-          <td>{{controlInf.label}}</td>
-          <td>
-            <ng-container [ngSwitch]="controlInf.inputType">
-              <input type="text" *ngSwitchCase="CONTROL_TYPE.TEXT" [name]="controlInf.name" [formControl]="controlInf.control" [placeholder]="controlInf.holder">
-              <textarea *ngSwitchCase="CONTROL_TYPE.TEXTAREA" [name]="controlInf.name" [formControl]="controlInf.control" [placeholder]="controlInf.holder"></textarea>
-              <mat-form-field *ngSwitchCase="CONTROL_TYPE.SELECT" appearance="fill" style="width: 100%">
-                <mat-label>Selectionner</mat-label>
-                <mat-select [(ngModel)]="controlInf.control.value" (infiniteScroll)="getNextBatch(controlInf)" [complete]="controlInf.currTotal === controlInf.sourcetotal"
-                            [name]="controlInf.name" [formControl]="controlInf.control" msInfiniteScroll>
-                  <mat-option *ngFor="let option of (controlInf.sourceObs | async)" [value]="option.id">{{getName(controlInf.sourceType, option)}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <ng-container *ngSwitchCase="CONTROL_TYPE.DATE_RANGE">
-                <mat-form-field *ngIf="controlInf.rangedControl && controlInf.rangedControl.length === 2" appearance="fill" style="width: 100%">
-                  <mat-date-range-input [rangePicker]="picker">
-                    <input matStartDate [formControl]="controlInf.rangedControl[0].control" class="static" [placeholder]="controlInf.rangedControl[0].holder">
-                    <input matEndDate [formControl]="controlInf.rangedControl[1].control" [placeholder]="controlInf.rangedControl[1].holder">
-                  </mat-date-range-input>
-                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-date-range-picker #picker color="primary"></mat-date-range-picker>
-                </mat-form-field>
-              </ng-container>
-              <p *ngSwitchDefault> Error</p>
-            </ng-container>
-            <ng-container *ngIf="controlInf.control && controlInf.control.touched">
-              <ng-container *ngFor="let error of controlInf.errorMessages.keys()">
-                <mat-error *ngIf="controlInf.control.hasError(error)">{{controlInf.errorMessages.get(error)}}</mat-error>
-              </ng-container>
-            </ng-container>
-          </td>
-        </tr>
-        </ng-container>
-        </tbody>
-        <tfoot>
-        <tr>
-          <td colspan="2">
-            <ul class="actions col-10">
-              <li><input [disabled]="!object.filter && (!formInf.form.valid || (abuseGard.getPending() | async).includes(object))" class="button primary" type="submit"
-                         value="Enregistrer"></li>
-              <li *ngIf="object.selected?.id"><input type="reset" (click)="remove()" [disabled]="(abuseGard.getPending() | async).includes(object)"
-                                      class="button primary" value="Supprimer"></li>
-            </ul>
-          </td>
-        </tr>
-        </tfoot>
-      </table>
+<form (submit)="submit()" *ngIf="formInf" [formGroup]="formInf.form" class="row">
+  <div class="container h100">
+    <div class="row h100 align-items-center">
+      <div class="table-wrapper">
+        <table class="alt">
+          <tbody>
+          <ng-container *ngFor="let controlInf of formInf.controls">
+            <tr *ngIf="controlInf.showed">
+              <td>{{controlInf.label}}</td>
+              <td>
+                <ng-container [ngSwitch]="controlInf.inputType">
+                  <input *ngSwitchCase="CONTROL_TYPE.TEXT" [formControl]="controlInf.control" [name]="controlInf.name"
+                         [placeholder]="controlInf.holder" type="text">
+                  <input *ngSwitchCase="CONTROL_TYPE.PASSWORD" [formControl]="controlInf.control"
+                         [name]="controlInf.name"
+                         [placeholder]="controlInf.holder" type="password">
+                  <textarea *ngSwitchCase="CONTROL_TYPE.TEXTAREA" [formControl]="controlInf.control"
+                            [name]="controlInf.name" [placeholder]="controlInf.holder"></textarea>
+                  <mat-form-field *ngSwitchCase="CONTROL_TYPE.SELECT" appearance="fill" style="width: 100%">
+                    <mat-label>Selectionner</mat-label>
+                    <mat-select (infiniteScroll)="getNextBatch(controlInf)" [(ngModel)]="controlInf.control.value"
+                                [complete]="controlInf.currTotal === controlInf.sourcetotal"
+                                [formControl]="controlInf.control" [name]="controlInf.name" msInfiniteScroll>
+                      <mat-option *ngFor="let option of (controlInf.sourceObs | async)"
+                                  [value]="option.id">{{getName(controlInf.sourceType, option)}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field *ngSwitchCase="CONTROL_TYPE.RADIO" appearance="fill" style="width: 100%">
+                    <mat-label>Selectionner</mat-label>
+                    <mat-select [(ngModel)]="controlInf.control.value"
+                                [formControl]="controlInf.control" [name]="controlInf.name">
+                      <mat-option [value]="false">Non</mat-option>
+                      <mat-option [value]="true">Oui</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <ng-container *ngSwitchCase="CONTROL_TYPE.DATE_RANGE">
+                    <mat-form-field *ngIf="controlInf.rangedControl && controlInf.rangedControl.length === 2"
+                                    appearance="fill" style="width: 100%">
+                      <mat-date-range-input [rangePicker]="picker">
+                        <input [formControl]="controlInf.rangedControl[0].control"
+                               [placeholder]="controlInf.rangedControl[0].holder" class="static"
+                               matStartDate>
+                        <input [formControl]="controlInf.rangedControl[1].control"
+                               [placeholder]="controlInf.rangedControl[1].holder"
+                               matEndDate>
+                      </mat-date-range-input>
+                      <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+                      <mat-date-range-picker #picker color="primary"></mat-date-range-picker>
+                    </mat-form-field>
+                  </ng-container>
+                  <p *ngSwitchDefault> Error</p>
+                </ng-container>
+                <app-mat-errors [control]="controlInf.control"></app-mat-errors>
+              </td>
+            </tr>
+          </ng-container>
+          </tbody>
+          <tfoot>
+          <tr>
+            <td colspan="2">
+              <ul class="actions col-10">
+                <li><input
+                  [disabled]="!object.filter && (!formInf.form.valid || (abuseGard.getPending() | async).includes(object))"
+                  class="button primary" type="submit"
+                  value="Enregistrer"></li>
+                <li *ngIf="object.selected?.id"><input (click)="remove()"
+                                                       [disabled]="(abuseGard.getPending() | async).includes(object)"
+                                                       class="button primary"
+                                                       type="reset" value="Supprimer"></li>
+              </ul>
+            </td>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
   </div>
-</div>
 </form>

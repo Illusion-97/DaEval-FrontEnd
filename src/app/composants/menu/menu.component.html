@@ -1,0 +1,13 @@
+<div class="side">
+  <div class="scrollbar scrollbar-primary h100">
+    <mat-list class="h100 flex">
+      <ng-container *ngFor="let type of countByType.value.keys()">
+        <mat-list-item (click)="cleanNav()"
+                       [routerLink]="ROUTE_BY_TYPE.get(type)" class="button primary">
+          <mat-icon matListIcon>{{getIcon(type)}}</mat-icon>
+          <h3 matLine>{{TYPE_NAME.get(type)}} ({{countByType.value.get(type)}})</h3>
+        </mat-list-item>
+      </ng-container>
+    </mat-list>
+  </div>
+</div>
